@@ -43,7 +43,6 @@
 };
 fetch("http://localhost:8001", body)
   .then(response => {
-    console.log(response.json());
     return response.json(); // added return statement to return the JSON response
   })
   .then(data => {
