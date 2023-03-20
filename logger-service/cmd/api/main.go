@@ -93,7 +93,7 @@ func connectToMongo() (*mongo.Client, error) {
 		return nil, err
 	}
 
-	log.Println("Connected to mongo!")
+	log.Println("Connected to mongo! ")
 
 	return c, nil
 }
