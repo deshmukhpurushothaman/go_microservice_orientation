@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   broker-service:
     build:
       context: ./../broker-service
@@ -38,6 +37,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    depends_on:
+      - mongo
     networks:
       - my-network
 
@@ -59,13 +60,9 @@ services:
       - my-network
 
   mongo:
-    image: "mongo:4.2.16-bionic"
+    image: 'mongo:4.2.16-bionic'
     ports:
       - "27017:27017"
-    # restart: always
-    # deploy:
-    #   mode: replicated
-    #   replicas: 1
     environment:
       MONGO_INITDB_DATABASE: logs
       MONGO_INITDB_ROOT_USERNAME: admin
