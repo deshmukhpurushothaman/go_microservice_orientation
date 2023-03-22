@@ -11,6 +11,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    depends_on:
+      - rabbitmq
     networks:
       - my-network
 
@@ -62,6 +64,18 @@ services:
     networks:
       - my-network
 
+  listener-service:
+    build:
+      context: ./../listener-service
+      dockerfile: ./../listener-service/listener-service.dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - rabbitmq
+    networks:
+      - my-network
+
   postgres:
     image: 'postgres:14.0'
     ports:
@@ -89,12 +103,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./db-data/mongo/:/data/db
+    networks:
+      - my-network
 
   mailhog:
     image: 'mailhog/mailhog:latest'
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - my-network
 
   rabbitmq:
     image: 'rabbitmq:3.9-alpine'
@@ -105,6 +123,8 @@ services:
       replicas: 1
     volumes:
       - ./db-data/rabbitmq/:/var/lib/rabbitmq/
+    networks:
+      - my-network
 
 networks:
   my-network:
