@@ -77,6 +77,7 @@ func (app *Config) serve() {
 	// Register the RPC server
 	err := rpc.Register(new(RPCServer))
 	go app.rpcListen()
+	go app.grpcListen()
 
 	err = srv.ListenAndServe()
 	if err != nil {
