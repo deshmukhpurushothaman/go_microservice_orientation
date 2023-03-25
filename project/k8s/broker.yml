@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo
+  name: broker-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      app: broker-service
   template:
     metadata:
       labels:
-        app: mongo
+        app: broker-service
     spec:
       containers:
-        - name: mongo
-          image: 'mongo:4.2.17-bionic'
+        - name: broker-service
+          image: 'deshmukhp/broker-service:1.0.0'
           resources:
             requests:
               memory: '64Mi'
@@ -22,26 +22,19 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
-          env:
-            - name: MONGO_INITDB_DATABASE
-              value: 'logs'
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: 'admin'
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: 'password'
           ports:
-            - containerPort: 27017
+            - containerPort: 8080
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo
+  name: broker-service
 spec:
   selector:
-    app: mongo
+    app: broker-service
   ports:
     - protocol: TCP
       name: main-port
-      port: 27017
-      targetPort: 27017
+      port: 8080
+      targetPort: 8080
